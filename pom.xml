@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.4</version>
+        <version>3.5.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.washintontech</groupId>
@@ -31,6 +31,7 @@
         <java.version>21</java.version>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
+        <spring-boot.version>3.5.4</spring-boot.version>
     </properties>
     <modules>
         <module>app</module>
@@ -40,57 +41,17 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-            <scope>provided</scope>
+            <version>${spring-boot.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.17.0</version>
+            <version>3.18.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.apache.tomcat</groupId>-->
-        <!--            <artifactId>annotations-api</artifactId>-->
-        <!--            <version>${tomcat.annotations.version}</version>-->
-        <!--            <scope>provided</scope>-->
-        <!--        </dependency>-->
-
-
-        <!-- Add Log4j2 for Spring Boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
-
-        <!-- Exclude Spring Boot's default Logback -->
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.boot</groupId>-->
-        <!--            <artifactId>spring-boot-starter-logging</artifactId>-->
-        <!--            <version>${parent.version}</version>-->
-        <!--            <scope>runtime</scope>-->
-        <!--            <exclusions>-->
-        <!--                <exclusion>-->
-        <!--                    <groupId>ch.qos.logback</groupId>-->
-        <!--                    <artifactId>logback-classic</artifactId>-->
-        <!--                </exclusion>-->
-        <!--            </exclusions>-->
-        <!--        </dependency>-->
-
-
     </dependencies>
 
     <build>
@@ -107,18 +68,6 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
-            <!--            <plugin>-->
-            <!--                <groupId>org.springframework.boot</groupId>-->
-            <!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
-            <!--                <configuration>-->
-            <!--                    <excludes>-->
-            <!--                        <exclude>-->
-            <!--                            <groupId>org.projectlombok</groupId>-->
-            <!--                            <artifactId>lombok</artifactId>-->
-            <!--                        </exclude>-->
-            <!--                    </excludes>-->
-            <!--                </configuration>-->
-            <!--            </plugin>-->
         </plugins>
     </build>
 

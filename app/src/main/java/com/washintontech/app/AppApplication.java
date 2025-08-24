@@ -1,12 +1,10 @@
 package com.washintontech.app;
 
 import com.washintontech.app.config.ApplicationConfig;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
-import org.springframework.web.reactive.config.EnableWebFlux;
 
 import java.time.ZoneId;
 import java.util.Locale;
@@ -14,10 +12,8 @@ import java.util.TimeZone;
 
 @SpringBootApplication
 @Import(ApplicationConfig.class)
-@EnableWebFlux
+@Log4j2
 public class AppApplication {
-
-    private static final Logger log = LogManager.getLogger(AppApplication.class);
 
     public static void main(String[] args) {
         try {
@@ -29,11 +25,6 @@ public class AppApplication {
             applicationContext.addApplicationListener(new ShutDownListener());
 
             log.info("Matching Engine Client Started....  ");
-
-//            log.info("""
-//
-//                        Matching Engine Client Started....        \s
-//                    """);
 
         } catch (Exception exception) {
             log.error("Failed to start Matching Engine Client: ", exception);

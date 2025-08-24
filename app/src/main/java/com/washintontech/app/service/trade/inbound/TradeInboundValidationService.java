@@ -1,36 +1,37 @@
 package com.washintontech.app.service.trade.inbound;
 
-import com.washintontech.app.model.trade.inbound.TradeNewRequest;
-import com.washintontech.app.repository.TradeRepository;
-import org.springframework.beans.factory.annotation.Value;
+import com.washintontech.app.exception.BadRequestException;
+import com.washintontech.app.model.trade.inbound.TradeCancelRequest;
+import com.washintontech.app.model.trade.inbound.TradeModifyRequest;
+import com.washintontech.app.repository.ClientRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import quickfix.field.Symbol;
 
 @Service
+@RequiredArgsConstructor
 public class TradeInboundValidationService {
 
-    @Value("${broker.id}")
-    private String brokerId;
+    private final ClientRepository clientRepository;
 
-    private final TradeRepository tradeRepository;
-
-    public TradeInboundValidationService(final TradeRepository tradeRepository) {
-        this.tradeRepository = tradeRepository;
+    public void validate(final TradeCancelRequest tradeCancelRequest) {
+        validateRequest(tradeCancelRequest.clientId(), tradeCancelRequest.order().script());
     }
 
-    public void requestValidate(final TradeNewRequest req) {
+    public void validate(final TradeModifyRequest tradeModifyRequest) {
+        validateRequest(tradeModifyRequest.clientId(), tradeModifyRequest.order().script());
     }
 
-//    public void responseValidate(final BrokerTradeResponse tradeResponse) {
-//        final var orderState = tradeRepository.orderStateByRequestId(tradeResponse.getRequestId());
-//        final var orderInboundResponse = tradeResponse.getOrderInboundResponse();
-//        if (!brokerId.equals(tradeResponse.getBrokerId()) || orderState == null ||
-//                orderInboundResponse.getQuantity() != orderState.getTotalQuantity() ||
-//                orderInboundResponse.getTradeDirection() != orderState.getTradeDirection() ||
-//                orderInboundResponse.getScript() != orderState.getScript() ||
-//                orderInboundResponse.getOrderPlacedPrice() != orderState.getPrice()) {
-//            throw new RuntimeException(String.format(
-//                    "Invalid Inbound trade response bearing brokerId: %s, requestId: %s, orderResponse: %s",
-//                    tradeResponse.getBrokerId(), tradeResponse.getRequestId(), tradeResponse.getOrderInboundResponse()));
-//        }
-//    }
+    private void validateRequest(final String clientId, final Symbol symbol) {
+        var clientAccount = clientRepository.getClientAccount(clientId);
+        if (clientAccount == null) {
+            throw new BadRequestException("Client account not found for clientId: " + clientId);
+        }
+
+        final var scriptValue = symbol.getValue();
+        final var activeScriptOrder = clientAccount.getActiveScriptOrder(scriptValue);
+        if (activeScriptOrder == null) {
+            throw new BadRequestException("No active script order found for script: " + scriptValue);
+        }
+    }
 }

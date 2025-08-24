@@ -16,14 +16,7 @@ import java.util.Objects;
 
 @Configuration
 public class FixConfig {
-    //private FixApplication fixApplication;
     private SocketInitiator initiator;
-
-//    @Bean
-//    public FixApplication fixApplication() {
-//        this.fixApplication = new FixApplication();
-//        return fixApplication;
-//    }
 
     @Bean
     public SocketInitiator socketInitiator(final FixApplication fixApplication) throws ConfigError {

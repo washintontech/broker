@@ -4,14 +4,14 @@ import com.washintontech.app.model.trade.inbound.TradeCancelRequest;
 import com.washintontech.app.model.trade.inbound.TradeModifyRequest;
 import com.washintontech.app.model.trade.inbound.TradeNewRequest;
 import com.washintontech.app.model.trade.inbound.TradeResponse;
-import com.washintontech.app.service.trade.inbound.TradeComplianceService;
 import com.washintontech.app.service.trade.inbound.TradeInboundService;
-import com.washintontech.app.service.trade.inbound.TradeInboundValidationService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,39 +19,35 @@ import quickfix.FieldNotFound;
 
 @RestController
 @RequestMapping(value = "/client/trader/")
+@RequiredArgsConstructor
+@Log4j2
 public class TradeController {
-
-    private static final Logger log = LogManager.getLogger(TradeController.class);
     private final TradeInboundService tradeInboundService;
-    private final TradeInboundValidationService validationService;
-    private final TradeComplianceService complianceService;
-
-    public TradeController(final TradeInboundService tradeInboundService,
-                           final TradeInboundValidationService validationService,
-                           final TradeComplianceService complianceService) {
-        this.tradeInboundService = tradeInboundService;
-        this.validationService = validationService;
-        this.complianceService = complianceService;
-    }
 
     @PostMapping(path = "/place/order", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public TradeResponse newTrade(@RequestBody TradeNewRequest tradeNewRequest) {
+    public ResponseEntity<TradeResponse> newTrade(@RequestBody TradeNewRequest tradeNewRequest) throws FieldNotFound {
         log.debug("Received trade request: {}", tradeNewRequest);
-        return tradeInboundService.trade(tradeNewRequest);
+        final var response = tradeInboundService.trade(tradeNewRequest);
+        return ResponseEntity.status(HttpStatusCode.valueOf(201))
+                .body(response);
     }
 
-    @PutMapping(path = "/update/order", consumes = MediaType.APPLICATION_JSON_VALUE,
+    @PatchMapping(path = "/update/order", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public TradeResponse modifyTrade(@RequestBody TradeModifyRequest tradeModifyRequest) throws FieldNotFound {
+    public ResponseEntity<TradeResponse> modifyTrade(@RequestBody TradeModifyRequest tradeModifyRequest) throws FieldNotFound {
         log.debug("Received trade request: {}", tradeModifyRequest);
-        return tradeInboundService.trade(tradeModifyRequest);
+        final var response = tradeInboundService.trade(tradeModifyRequest);
+        return ResponseEntity.status(HttpStatusCode.valueOf(201))
+                .body(response);
     }
 
     @PostMapping(path = "/cancel/order", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public TradeResponse cancelTrade(@RequestBody TradeCancelRequest tradeCancelRequest) throws FieldNotFound {
+    public ResponseEntity<TradeResponse> cancelTrade(@RequestBody TradeCancelRequest tradeCancelRequest) throws FieldNotFound {
         log.debug("Received trade request: {}", tradeCancelRequest);
-        return tradeInboundService.trade(tradeCancelRequest);
+        final var response = tradeInboundService.trade(tradeCancelRequest);
+        return ResponseEntity.status(HttpStatusCode.valueOf(201))
+                .body(response);
     }
 }

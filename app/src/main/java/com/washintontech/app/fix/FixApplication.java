@@ -2,8 +2,7 @@ package com.washintontech.app.fix;
 
 import com.washintontech.app.service.trade.outbound.TradeOutboundService;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 import quickfix.Application;
 import quickfix.DoNotSend;
@@ -21,17 +20,16 @@ import quickfix.fix44.ExecutionReport;
 
 @Component
 @RequiredArgsConstructor
+@Log4j2
 public class FixApplication extends MessageCracker implements Application {
-    private static final Logger log = LogManager.getLogger(FixApplication.class);
-
-    private SessionID sessionID;
 
     private final TradeOutboundService tradeOutboundService;
+    private SessionID sessionID;
 
     @Override
     public void onCreate(final SessionID sessionId) {
         this.sessionID = sessionId;
-        System.out.println("Session created: " + sessionID);
+        log.debug("Session created: {}", sessionId);
     }
 
     public void sendToExchange(Message message) {
@@ -81,6 +79,11 @@ public class FixApplication extends MessageCracker implements Application {
     @Handler
     public void onMessage(ExecutionReport message, SessionID sessionID) throws FieldNotFound {
         log.info("Received ExecutionReport: {}", message);
-        tradeOutboundService.processExecutionReport(message);
+        try {
+            tradeOutboundService.processExecutionReport(message);
+        } catch (Exception exception) {
+            log.error("Error processing ExecutionReport: {}", exception.getMessage(), exception);
+        }
+
     }
 }
