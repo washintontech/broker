@@ -13,8 +13,8 @@ public class ShutDownListener implements ApplicationListener<ContextClosedEvent>
         event.getApplicationContext().getBean(SocketInitiator.class)
                 .stop();
         log.info("""
-
-                    Matching Engine Client is shutting down. Bye!        \s
+                
+                    Stock Broker is shutting down. Bye!        \s
                 """);
     }
 }

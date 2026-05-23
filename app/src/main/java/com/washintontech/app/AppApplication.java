@@ -24,10 +24,10 @@ public class AppApplication {
             final var applicationContext = SpringApplication.run(AppApplication.class, args);
             applicationContext.addApplicationListener(new ShutDownListener());
 
-            log.info("Matching Engine Client Started....  ");
+            log.info("Stock Broker Started....  ");
 
         } catch (Exception exception) {
-            log.error("Failed to start Matching Engine Client: ", exception);
+            log.error("Failed to start Stock Broker: ", exception);
             System.exit(1);
         }
     }
