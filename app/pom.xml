@@ -9,22 +9,8 @@
         <relativePath>./../pom.xml</relativePath>
     </parent>
     <artifactId>app</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>app</name>
     <description>app</description>
-    <url/>
-    <licenses>
-        <license/>
-    </licenses>
-    <developers>
-        <developer/>
-    </developers>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
     <properties>
         <java.version>21</java.version>
         <os.maven.plugin.version>1.7.1</os.maven.plugin.version>
@@ -33,13 +19,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
-        <!-- QuickFIX/J Core -->
         <dependency>
             <groupId>org.quickfixj</groupId>
             <artifactId>quickfixj-core</artifactId>
             <version>${quickfixj.version}</version>
         </dependency>
-        <!-- QuickFIX/J Generated FIX44 Messages -->
         <dependency>
             <groupId>org.quickfixj</groupId>
             <artifactId>quickfixj-messages-fix44</artifactId>
@@ -59,12 +43,12 @@
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>8.0.2.Final</version> <!-- Use the latest compatible version -->
+            <version>8.0.2.Final</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>jakarta.el</artifactId>
-            <version>4.0.2</version> <!-- EL implementation required by Hibernate Validator -->
+            <version>4.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
